@@ -32,7 +32,7 @@ NEVER DIRECTLY CONNECT THE BATTERY HOUSING TO THE ELECTRONICS HOUSING.
     - inside the terminal (vehicle system) type `roslaunch [vehicle_name]_bringup bringup_test.launch`
     - use `rostopic echo [topic_name]` to check if the driver is publishing data to the topics related to a sensor.
     - use `rostopic hz [topic_name]`, you can check how fast the data is publishing to a topic.
-
+    
 - **Thruster test:** 
     - Prepare launch file: copy the following lines into `bringup_test.launch` file.
     ```
