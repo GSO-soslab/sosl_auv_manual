@@ -2,7 +2,7 @@
 ## Vehicle Operation
 - [Pre-mission check](https://github.com/GSO-soslab/sosl_auv_manual/blob/main/vehicle_operation/1_pre-mission_check.md)
 
-- [Operation instruction]()
+- [Operation instruction](https://github.com/GSO-soslab/sosl_auv_manual/blob/main/vehicle_operation/2_operation.md)
 
 
 
