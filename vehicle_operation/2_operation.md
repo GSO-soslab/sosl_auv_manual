@@ -1,42 +1,55 @@
 # Vehicle operation instruction
 ## Bringup the vehicle
-- Power on the vehicle by plug-in the power cable from the battery management housing (2in housing) to the VIN port in the electronics housing.
+- Power on the vehicle by plug-in the power cable from the battery management housing (2in housing) to the **VIN** port on the electronics housing.
 - Connect your laptop to the same WIFI network (name found on the station box).
 - `Ping [vehicle_ip_address]`. The IP address can be found on the vehicle log book. Wireless ip address should start with 192.168.1.xxx. Tether connection is under 192.168.2.xxx
 - `ssh [vehicle_name]@[ip_address]`
 - In the terminal, run `roslaunch [vehicle_name]_bringup bringup_vehicle.launch`. All sensors should be up running and the MVP helm should be active.
-- Enable/disable controller: Open another terminal and type, `rosservice call /[vehicle_name]/controller/enable` or `rosservice call /[vehicle_name]/controller/disable`. You should see "controller enabled" or "controller disabled" in the previous terminal.
+- Enable/disable controller: Open another terminal and type, `rosservice call /[vehicle_name]/controller/enable` or `rosservice call /[vehicle_name]/controller/disable`. You should see "controller enabled" or "controller disabled" in the previous terminal. By default, the controller is disabled.
 
-## Change states
+## Get information about the FSM in helm
 - Check your current state: type `rosservice call /[vehicle_name]/helm/get_state`
 - Check available states: type  `rosservice call /[vehicle_name]/helm/get_states`
-- Go to a different state: tyep  `rosservice call /[vehicle_name]/helm/change_state` then use tab to auto-fill. and inside quote symbol you put the actual name of the state, e.g., survey_global.
+- Go to a different state: type  `rosservice call /[vehicle_name]/helm/change_state` then use tab to auto-fill and entry the state name inside quotation marks.
 - The states are defined inside the file `[vehicle_name_config]/mission/config/helm.yaml`. 
-    - The finite state machine section shows all the states, state connections, and the control modes used.
-    - Behaviors section shows the helm plugins used, and their priorities in each state. Priority is used for the case that two behaviors may try to command different desired value for a controlled state, then the mvp_control will only take the one from the behavior with the highest priority. 
+    - `finite_state_machine` section shows all the states, state connections, and the control modes used in the state.
+    - `behaviors` section shows the helm bhv_plugins used, and their priorities in each state. Priority is used for the case that multiple behaviors may try to command different desired setpoints for a controlled state. Then, the mvp_control will only take the one from the behavior with the highest priority. 
     - global_link should be kept at `world_ned` 
     - local_link should be kept with `cg_link`
-    - These two links indicate which frame the desired values from the behaviors will be in and will be used by the mvp_control.
-- The configuration for each behavior is loaded by `[vehicle_name]_bringup/launch/bringup_helm.launch`. The actual yaml files are located in `[vehicle_name]_config/mission/param`.
-- Normally, we will have `start, survey_local, survey_global, kill, and direct_control` states.
-    - `start` is the initial state when the MVP-helm is up running.
-    - `survey_local` the MVP_helm will guide the vehicle to go through a list of waypoints defined in `[vehicle_name]_config/mission/param/path_local.yaml` file where x and y are in the world_ned frame or the global frame defined in the `[vehicle_name]_config/mission/config/helm.yaml`
-    - `survey_global` the MVP_helm will guide the vehicle to go through a list of waypoints defined in `[vehicle_name]_config/mission/param/gps_wpt.yaml` file. Other path following parameters are located in `path_global.yaml` in the same folder.
-    - In both survey mode, the depth is defined in `depth_tracking.yaml`. Currently, it is a constant depth. We are currently updating the depth tracking behavior such that different depth can be defined along with the waypoints.
-    - `direct_control` state will allow user to direct command the desired pose in different DOFs based on the control modes.
+    - These two above links indicate which frames the desired values from the behaviors will be in and will be used by the mvp_control.
+- The configuration for each behavior is loaded inside `[vehicle_name]_bringup/launch/bringup_helm.launch` with additional param from yaml files located in `[vehicle_name]_config/mission/param`.
+- Normally, we will have `start, survey_3d, kill, and direct_control` states.
+    - `start` is the initial state when the MVP-helm is up running. Its control mode is normally idle, meaning no states are controlled. THe vehicle will return to this state if it has finished all the waypoints.
+    - `survey_3d` the MVP_helm will guide the vehicle to go through a list of waypoints. Initial waypoint list can be found in `[vehicle_name]_config/mission/param/path_local.yaml`. BUt can be updated via topics and services. Check **waypoint programming** section for information.
+    - `direct_control` state will allow user to direct command the desired setpoints in different DOFs based on the control modes. Typically, z, yaw, pitch, surge are enabled. see more information in **Desired pose programming** section.
+    - `kill` state is similar to `start` state where no thruster will be commanded. and the vehicle will stay idle.
 
 ## Waypoint programming
-- Option-1: 
-    - stop the helm
-    - update the waypoints in `gps_wpt.yaml` file   
-    - restart the helm by `roslaunch [vehicle_name]_bringup bringup_vehicle.launch`
-- Option-2 (to_do)
-    - `update_waypoint` topic is already exist but there is no ros node or service avaiable to update the values based on a file.
-    - Create a new rosnode called mvp_utilities to have services that user can call to update the waypoints based on yaml file (with latlon or local defined as a param).
+`survey_3d` uses path_following_3d bevahior plugin from helm. This plug-in will guide the AUV to track line segments between the waypoints definde by the user. At the same time, it will guide the vehicle to keep its depth around the z-value of the next waypoint. 
+We have two options to allow user to update waypoints on-the-fly.
 
+- Option-1: Good for adaptive sampling.
+    - User could direct publish waypoints in `geometry_msgs::PolygonStamped` format to the topic name `/[vehicle_name]/helm/path_3d/update_waypoints`. The behavior will convert the waypoints into the helm's target id then overwritten its current waypoints and start to track them. **Note** If the vehicle is in the `start` state, user has to switch the vehicle state to `survey_3d` to active waypoint tracking.
+- Option-2: Good for regular AUV survyes.
+    - User could pre-load or upload waypoint files to the folder `[vehicle_name]_config/mission/param/goto_list/`. 
+    - User load new waypoints by running `rosservice call /[vehicle_name]/helm/path_3d/load_waypoints "file: '[filename]'"` to load the waypoint files. If successful, the vehicle's waypoints will be updated immediately. 
+        - If the vehicle is in `survey_3d` state, it will start to track the new waypoints
+        - If the vehicle is in `start` state, you need to switch the state back to `survey_3d`.
+        - User can define different frame_id in the waypoint yaml file. 
+        - **TODO add ll_waypoint section for loading waypoints in latitude, longitude and altitude format.**
+- Check next waypoint.
+    - User can check which waypoint the vehicle is moving towards by calling the a service. `rosservice call /[vehicle_name]/helm/path_3d/get_next_waypoint "{}" `
+    - It will retunr the waypoint's x, y, z with a frame_id, and the latitude, longitude and altitude of the waypoint calculated using `ToLL` service from the robot localization package.
+- When the vehicle finish all the waypoints, it will return to `start` state.
 
-## Desired pose programming
-- We recommend to use `rqt_ez_publisher` to adjust the desired pose under the topic `continuous_command_topic`
+## Desired pose setpoints programming
+`direct_control` state is designed for the users who don't want to use built-in waypoint following behavior. They can directly command desired setpoints to a vehicle state and use MVP_control to control the vehicle pose. 
+
+- `direct_control` control mode can be found in `[vehicle_name_config]/mission/config/helm.yaml`, e.g., you will see `mode: hold_dof` in `direct_control` section.
+- You can find which DOFs are controlled and PID gain in `[vehicle_name]_config/config/control.yaml` or `[vehicle_name]_config/config/control_sim.yaml`. The later one is just for simulation environment.
+- The initial desired setpoints are defined in file `[vehicle_name]_config/config/mission/param/direct_control.yaml`.
+- To change the desired setpoints on-the-fly, you can publish a customized msgs to the topic `/[vehicle_name]/helm/direct_control/desired_setpoints`. 
+- We suggest user to use `rqt_ez_publisher` to adjust the desired setpoints when testing the basic behavior.
 
 ## Localization
 - Local odometry is available in `ENU` format under `[vehicle_name]odometry/filtered/local` topic
