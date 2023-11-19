@@ -36,7 +36,16 @@ We have two options to allow user to update waypoints on-the-fly.
         - If the vehicle is in `survey_3d` state, it will start to track the new waypoints
         - If the vehicle is in `start` state, you need to switch the state back to `survey_3d`.
         - User can define different frame_id in the waypoint yaml file. 
-        - **TODO add ll_waypoint section for loading waypoints in latitude, longitude and altitude format.**
+        - User can define waypoint in latitude(lat), longitude(lon) and altitude(alt) format inside `ll_waypoint` section with an example shown below. **Note**: altitude is positive upward as it uses ENU convention.
+        ```
+        #frame id has to be keep in world as from LL will convert waypoint into lat lon
+        frame_id: "world" 
+
+        ll_waypoints:
+        - {lat: 41.0000,  lon: -71.001,  alt: -10}
+        - {lat: 41.0001,  lon: -71.002,  alt: -5}
+        - {lat: 41.0002,  lon: -71.001,  alt: -20}
+        ```
 - Check next waypoint.
     - User can check which waypoint the vehicle is moving towards by calling the a service. `rosservice call /[vehicle_name]/helm/path_3d/get_next_waypoint "{}" `
     - It will retunr the waypoint's x, y, z with a frame_id, and the latitude, longitude and altitude of the waypoint calculated using `ToLL` service from the robot localization package.
