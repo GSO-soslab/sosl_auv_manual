@@ -48,7 +48,7 @@ NEVER DIRECTLY CONNECT THE BATTERY HOUSING TO THE ELECTRONICS HOUSING.
         ```
         - *Corresponding thruster is spinning?* you can hit control+c in the `rostopic pub` terminal.
         - *Wrong thruster is spinning?* you can adjust the mapping between PWM channels and thruster topics in the `[vehicle_name]_config/config/pi_pico.yaml`, under `PWM_Control` section.    **Please only change the channel number**
-        - *Which direction the thruster should spin?* All the thrusters on the vehicle have **Clockwise** propeller (see the figure below). When a positve command is sent, the propeller should spin **clockwise** when you looking from the **cable side**, and it should generate a thrust towards the **cable side**. If this is not right you have two options.
+        - *Which direction the thruster should spin?* All the thrusters on the vehicle have **Clockwise** propeller (see the [figure](https://github.com/GSO-soslab/sosl_auv_manual/blob/main/pictures/thruster_direction.png) below). When a positve command is sent, the propeller should spin **clockwise** when you looking from the **cable side**, and it should generate a thrust towards the **cable side**. If this is not right you have two options.
             - Switch two motor cables connected to the ESC
             - Update the `[vehicle_name]_description/urdf/base.urdf.xacro` file. You can invert the x-axis of the thruster by rotating the thruster link around z axis by 180 deg(pi). 
 
