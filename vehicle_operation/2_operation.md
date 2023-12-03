@@ -59,9 +59,9 @@ We have two options to allow user to update waypoints on-the-fly.
 - The initial desired setpoints are defined in file `[vehicle_name]_config/config/mission/param/direct_control.yaml`.
 - To change the desired setpoints on-the-fly, you can publish a customized msgs to the topic `/[vehicle_name]/helm/direct_control/desired_setpoints`. 
 - We suggest user to use `rqt_ez_publisher` to adjust the desired setpoints when testing the basic behavior.
-- Alternatively, user can use **Logitec F170** and `joy` package to control vehicle's surge, sway, yaw, pitch, and depth. The surge and sway are controlled by the left joystick, and the yaw, pitch and depth are controlled by the buttons on the right. (see the [figure](https://github.com/GSO-soslab/sosl_auv_manual/blob/main/pictures/tele_op.png) below) 
+- Alternatively, user can use **Logitec F170** and `joy` package to control vehicle's surge, sway, yaw, pitch, and depth. The surge and sway are controlled by the left joystick, and the yaw, pitch and depth are controlled by the buttons on the right. (see the [figure](https://github.com/GSO-soslab/sosl_auv_manual/blob/main/pictures/tele_op2.png) below) 
 - User could program the increments (deg or meters) for the yaw, pitch and depth when the button is pressed once, and could up or down scale the joystick commands for surge and sway velocity mapping. Check the `[vehicle_name]_config/mission/param/direct_control.yaml` file for the values.
-<img src="https://github.com/GSO-soslab/sosl_auv_manual/blob/main/pictures/tele_op.png" width="700">
+<img src="https://github.com/GSO-soslab/sosl_auv_manual/blob/main/pictures/tele_op2.png" width="700">
 
 ## Localization
 - Local odometry is available in `ENU` format under `[vehicle_name]odometry/filtered/local` topic
