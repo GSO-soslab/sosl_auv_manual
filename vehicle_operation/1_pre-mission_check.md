@@ -52,7 +52,7 @@ NEVER DIRECTLY CONNECT THE BATTERY HOUSING TO THE ELECTRONICS HOUSING.
             - Switch two motor cables connected to the ESC
             - Update the `[vehicle_name]_description/urdf/base.urdf.xacro` file. You can invert the x-axis of the thruster by rotating the thruster link around z axis by 180 deg(pi). 
 
-<img src="https://github.com/GSO-soslab/sosl_auv_manual/blob/main/pictures/thruster_direction.png" width="200">
+<img src="https://github.com/GSO-soslab/sosl_auv_manual/blob/main/pictures/thruster_direction.png" width="500">
 <!-- ![Thruster directions](https://github.com/GSO-soslab/sosl_auv_manual/blob/main/pictures/thruster_direction.png =100x20) -->
 
 ## Power down the vehicle
