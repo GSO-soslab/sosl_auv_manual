@@ -51,6 +51,12 @@ We have two options to allow user to update waypoints on-the-fly.
     - It will retunr the waypoint's x, y, z with a frame_id, and the latitude, longitude and altitude of the waypoint calculated using `ToLL` service from the robot localization package.
 - When the vehicle finish all the waypoints, it will return to `start` state.
 
+- ***NavSat node conifugration***  
+    - In our default setting, the `world` frame and `odom` frame are placed at the same location. 
+    - User can define where is the Latitude and Longitude of their `world` frame in the yaml file located under `[vehicle_name]/[vehicle_name]_config/config/navsat.yaml`.
+    - Change the values for the `datum` paramter.
+    - ToLL and FromLL services will response x, y, z position when sending the request with latitude, longitude and altitude. These services are used extensively in our MVP_mission.
+
 ## Desired pose setpoints programming
 `direct_control` state is designed for the users who don't want to use built-in waypoint following behavior. They can directly command desired setpoints to a vehicle state and use MVP_control to control the vehicle pose. 
 
@@ -62,6 +68,7 @@ We have two options to allow user to update waypoints on-the-fly.
 - Alternatively, user can use **Logitec F170** and `joy` package to control vehicle's surge, sway, yaw, pitch, and depth. The surge and sway are controlled by the left joystick, and the yaw, pitch and depth are controlled by the buttons on the right. (see the [figure](https://github.com/GSO-soslab/sosl_auv_manual/blob/main/pictures/tele_op2.png) below) 
 - User could program the increments (deg or meters) for the yaw, pitch and depth when the button is pressed once, and could up or down scale the joystick commands for surge and sway velocity mapping. Check the `[vehicle_name]_config/mission/param/direct_control.yaml` file for the values.
 <img src="https://github.com/GSO-soslab/sosl_auv_manual/blob/main/pictures/tele_op2.png" width="700">
+- ***Note: Logitech has to be in Direction mode***
 
 ## Localization
 - Local odometry is available in `ENU` format under `[vehicle_name]odometry/filtered/local` topic
