@@ -69,12 +69,14 @@ We have two options to allow user to update waypoints on-the-fly.
 - User could program the increments (deg or meters) for the yaw, pitch and depth when the button is pressed once, and could up or down scale the joystick commands for surge and sway velocity mapping. Check the `[vehicle_name]_config/mission/param/direct_control.yaml` file for the values.
 <img src="https://github.com/GSO-soslab/sosl_auv_manual/blob/main/pictures/tele_op2.png" width="700">
 - When launching the joy node, we also need to remap the topics. An example of the commands in the launch file is shown below.
+
 ```
  <node ns="$(arg robot_name)" name="joy_node" pkg="joy" 
         type="joy_node" output="screen">
         <remap from="joy" to="helm/direct_control/joy" />
   </node>
 ```
+
 - ***Note: Logitech has to be in Direction mode***
 
 ## Localization
