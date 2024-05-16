@@ -24,7 +24,11 @@ NEVER DIRECTLY CONNECT THE BATTERY HOUSING TO THE ELECTRONICS HOUSING.
 - **Ping ethernet sensors**
     - The DVL, Ping360 and other deveices are connected using a ethernet swith inside the vehicle. 
     - Once you have connected to the vehicle, through either above way, you can ping these devices.
-    
+- **Network testing**
+    - Install `iperf3`: `sudo apt install iperf3`
+    - Make one machine a server: `iperf3 -s`
+    - Make an client on another mahcine: `iperf3 -c <ip of the server machine>`
+    - You should see the speed of the connection
 
 ## Dry test
 - **Sensor test:** `[vehicle_name]_bringup/launch/bringup_test.launch` is an empty launch file for user to test individual sensors drivers. All the launch commands for sensors are located `bringup_vehicle.launch`. Follow the instruction below to test a sensor.
