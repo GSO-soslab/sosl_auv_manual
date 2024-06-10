@@ -4,6 +4,8 @@
 
 - [Operation instruction](https://github.com/GSO-soslab/sosl_auv_manual/blob/main/vehicle_operation/2_operation.md)
 
+- [MVP GUI instruction]()
+
 ## Vehicle file systems
 
 
