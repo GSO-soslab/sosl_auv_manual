@@ -1,7 +1,7 @@
 # Vehicle Status page
 This page display vital messages from the vehicle.
 
-<img src="https://github.com/GSO-soslab/sosl_auv_manual/blob/main/pictures/mvp_gui/rostopics_page.png" width="700">
+
 
 
 

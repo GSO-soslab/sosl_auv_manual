@@ -1,4 +1,6 @@
 # ROS topic page
+<img src="https://github.com/GSO-soslab/sosl_auv_manual/blob/main/pictures/mvp_gui/rostopics_page.png" width="700">
+
 This page allows user to check rostopics available.
 
 For ROS1 user, make sure `ROS Master` is exported to the correct IP addresss, and machines have listed in the `/etc/hosts` file in all machines
