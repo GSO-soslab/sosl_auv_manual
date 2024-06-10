@@ -1,4 +1,6 @@
 # Map page
+<img src="https://github.com/GSO-soslab/sosl_auv_manual/blob/main/pictures/mvp_gui/map_page.png" width="700">
+
 This is the main page for vehicle pilots
 
 - `Controller state` table allows user to `enabled` or `disable` controller on the vehicle with current status show on the left.

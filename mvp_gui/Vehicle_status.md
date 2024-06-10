@@ -1,9 +1,8 @@
 # Vehicle Status page
+
+<img src="https://github.com/GSO-soslab/sosl_auv_manual/blob/main/pictures/mvp_gui/vehicle_status_page.png" width="700">
+
 This page display vital messages from the vehicle.
-
-
-
-
 
 The information is obtained from rostopics that is defined in `config/gui_config.yaml`
 

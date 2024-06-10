@@ -1,4 +1,8 @@
 # Power manager page
+
+<img src="https://github.com/GSO-soslab/sosl_auv_manual/blob/main/pictures/mvp_gui/power_manager_page.png" width="700">
+
+
 This page is used to call the service and publish message to the topics to [alpha_gpio_manager](https://github.com/uri-ocean-robotics/alpha_core) which runs on AUV computer and controls GPIOs.
 
 -The table will list all the services available for setting device power.

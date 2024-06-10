@@ -1,4 +1,6 @@
 # Mission Page
+<img src="https://github.com/GSO-soslab/sosl_auv_manual/blob/main/pictures/mvp_gui/mission_page.png" width="700">
+
 This page allows user to create waypoints.
 Note: negative altitude means below the surface
 
