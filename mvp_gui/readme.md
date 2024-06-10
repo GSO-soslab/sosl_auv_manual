@@ -13,6 +13,7 @@ python3 run.py
 
 Click the link below to see the instruction for each GUI page
 - Systems page
+
 - [ROS Topic page](https://github.com/GSO-soslab/sosl_auv_manual/blob/main/mvp_gui/rostopic_page.md)
 
 - [Vehicle status page](https://github.com/GSO-soslab/sosl_auv_manual/blob/main/mvp_gui/Vehicle_status.md)
