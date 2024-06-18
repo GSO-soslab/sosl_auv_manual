@@ -123,7 +123,7 @@ The driver will allow user to track the vehicle position, and send MVP commands.
 
 ## Time Synchronization
 
-### Service side (Pi)
+### Server side (Pi)
 
 #### GPSD
 gpsd is a linux software to parse the GPS NMEA strings and publish them.
