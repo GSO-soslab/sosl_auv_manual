@@ -153,7 +153,8 @@ BAUDRATE="9600"
 chrony is the linux software to time sync the system using different type of time sources (e.g., Inernet, GPS, other computer...)
 
 - install dependency: `sudo apt install chrony`
-- save the default file and copy following to the file `/etc/chrony/chrony.conf`
+- save the default file as backup 
+- copy following to the file `/etc/chrony/chrony.conf`
 ```sh
 ### /etc/chrony/chrony.conf ###
 
@@ -181,7 +182,8 @@ initstepslew 30
 
 ### Clinet side (Jetson)
 - install dependency: `sudo apt install chrony`
-- save the default file and add line to the file `/etc/chrony/chrony.conf`
+- save the default file as backup
+- comment the **Internet server** and add line to the file `/etc/chrony/chrony.conf`
 ```sh
 # set the servers IP here to sync to it
 Server <Master IP or Hostname> minpoll 0 maxpoll 3 iburst prefer
