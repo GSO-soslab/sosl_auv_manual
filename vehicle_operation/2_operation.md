@@ -151,7 +151,7 @@ BAUDRATE="9600"
     - if above not working, do the following:
   ```sh
   $ roscd alpha_rise_config
-  $ sudo sh setup_gps_badurate.sh
+  $ sudo sh sh/setup_gps_badurate.sh
   ```
 
 #### Chrony
