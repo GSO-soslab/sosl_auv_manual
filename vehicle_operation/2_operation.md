@@ -168,10 +168,11 @@ driftfile /var/lib/chrony/drift
 # make it serve time even if it is not synced (as it can't reach out)
 local stratum 10
 
-## Used for NTP time sync for other system (e.g. DVL, Topside, Other system)
+## Used for NTP time sync for other system (e.g. DVL, Topside, Pi...)
 allow 192.168.2.0/24
+local stratum 8
 
-## Used for time sync Jetson from Arduino using gps NMEA string and PPS 
+## Used for time sync from gpsd daemon (NMEA string) 
 makestep 1.0 3
 maxupdateskew 100.0
 refclock SHM 0 poll 2 refid GPS precision 1e-1 offset 0.128 trust
@@ -183,8 +184,38 @@ initstepslew 30
 ### Clinet side (Jetson)
 - install dependency: `sudo apt install chrony`
 - save the default file as backup
-- comment the **Internet server** and add line to the file `/etc/chrony/chrony.conf`
+- copy following to the file `/etc/chrony/chrony.conf`: it comment out the Internet time server and set Pi as time server
 ```sh
 # set the servers IP here to sync to it
-Server <Master IP or Hostname> minpoll 0 maxpoll 3 iburst prefer
+## Internet server
+#pool ntp.ubuntu.com iburst maxsources 4
+
+## Set Pi as time server: could either use hostname or IP
+Server raspberrypi minpoll 0 maxpoll 3
+
+# This directive specify the location of the file containing ID/key pairs for
+# NTP authentication.
+keyfile /etc/chrony/chrony.keys
+
+# This directive specify the file into which chronyd will store the rate
+# information.
+driftfile /var/lib/chrony/chrony.drift
+
+# Uncomment the following line to turn logging on.
+#log tracking measurements statistics
+
+# Log files location.
+logdir /var/log/chrony
+
+# Stop bad estimates upsetting machine clock.
+maxupdateskew 100.0
+
+# This directive enables kernel synchronisation (every 11 minutes) of the
+# real-time clock. Note that it can’t be used along with the 'rtcfile' directive.
+rtcsync
+
+# Step the system clock instead of slewing it if the adjustment is larger than
+# one second, but only in the first three clock updates.
+makestep 1 3
+
 ```
