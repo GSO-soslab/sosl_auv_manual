@@ -148,6 +148,11 @@ BAUDRATE="9600"
 ```
 - restart: `sudo systemctl restart gpsd`
 - check the installation: `cgps -s`
+    - if above not working, do the following:
+  ```sh
+  $ roscd alpha_rise_config
+  $ sudo sh setup_gps_badurate.sh
+  ```
 
 #### Chrony
 chrony is the linux software to time sync the system using different type of time sources (e.g., Inernet, GPS, other computer...)
