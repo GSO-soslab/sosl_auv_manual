@@ -153,6 +153,16 @@ BAUDRATE="9600"
   $ roscd alpha_rise_config
   $ sudo sh sh/setup_gps_badurate.sh
   ```
+- when the GPS serial port is read by a ROS driver that forwards the NMEA over UDP (`use_gpsd_udp` in `unicore_rtk_driver` and `rtk_base`, port `virtual_port`), gpsd reads the UDP port instead. The driver owns the serial port, so gpsd must not open it:
+```sh
+START_DAEMON="true"
+
+USBAUTO="false"
+
+DEVICES="udp://127.0.0.1:5006"
+
+GPSD_OPTIONS="-n"
+```
 
 #### Chrony
 chrony is the linux software to time sync the system using different type of time sources (e.g., Inernet, GPS, other computer...)
@@ -223,4 +233,10 @@ rtcsync
 # one second, but only in the first three clock updates.
 makestep 1 3
 
+```
+
+### RTK base station and shore laptop
+The RTK base station computer uses the same gpsd and chrony setup and serves time to the shore network, see [RTK base station](3_rtk_base_station.md#time-synchronization). On the shore laptop use the client configuration above with the base station as server:
+```sh
+server <base_station_ip> iburst
 ```
